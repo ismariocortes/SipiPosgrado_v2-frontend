@@ -11,9 +11,9 @@ export function LoginPage() {
       style={safeAreaStyle}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute -left-[20%] -top-[10%] h-[min(100vw,28rem)] w-[min(100vw,28rem)] rounded-full bg-[#003366]/[0.06] blur-3xl" />
-        <div className="absolute -bottom-[15%] -right-[15%] h-[min(90vw,24rem)] w-[min(90vw,24rem)] rounded-full bg-[#0055a5]/[0.07] blur-3xl" />
-        <div className="absolute left-1/2 top-[22%] h-48 w-48 -translate-x-1/2 rounded-full bg-[#f2a900]/[0.07] blur-3xl" />
+        <div className="absolute -left-[20%] -top-[10%] h-[min(100vw,28rem)] w-[min(100vw,28rem)] rounded-full bg-[#122b40]/[0.07] blur-3xl" />
+        <div className="absolute -bottom-[15%] -right-[15%] h-[min(90vw,24rem)] w-[min(90vw,24rem)] rounded-full bg-[#3d657d]/[0.08] blur-3xl" />
+        <div className="absolute left-1/2 top-[22%] h-48 w-48 -translate-x-1/2 rounded-full bg-[#bc921c]/[0.08] blur-3xl" />
       </div>
 
       <InstitutionalHeader />
@@ -27,8 +27,8 @@ export function LoginPage() {
             <h1 className="font-display mt-2 text-balance text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
               Proceso de ingreso a posgrados
             </h1>
-            <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-[#003366] via-[#0055a5] to-[#f2a900]" />
-            <p className="font-display mt-4 text-base font-semibold text-[#b45309] sm:text-lg">
+            <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-[#122b40] via-[#3d657d] to-[#bc921c]" />
+            <p className="font-display mt-4 text-base font-semibold text-[#bc921c] sm:text-lg">
               Febrero — Junio
             </p>
             <p className="mt-2 text-sm font-medium text-slate-600">
@@ -44,7 +44,7 @@ export function LoginPage() {
             ¿Aún no tienes usuario?{" "}
             <Link
               to="/aviso-de-privacidad"
-              className="font-semibold text-[#003366] underline decoration-[#003366]/30 underline-offset-2 transition hover:decoration-[#003366]"
+              className="font-semibold text-[#122b40] underline decoration-[#122b40]/35 underline-offset-2 transition hover:decoration-[#122b40]"
             >
               Regístrate aquí
             </Link>

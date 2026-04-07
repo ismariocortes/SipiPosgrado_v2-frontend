@@ -7,21 +7,17 @@ export default {
     extend: {
       colors: {
         uady: {
-          primary: "#003366",
-          secondary: "#0055A5",
-          accent: "#F2A900",
+          primary: "#122B40",
+          secondary: "#3d657d",
+          accent: "#BC921C",
           bg: "#F5F7FA",
         },
       },
       fontFamily: {
-        sans: ['"Source Sans 3"', "system-ui", "sans-serif"],
-        display: [
-          '"Plus Jakarta Sans"',
-          '"Source Sans 3"',
-          "system-ui",
-          "sans-serif",
-        ],
+        sans: ['"Inter"', "system-ui", "sans-serif"],
+        display: ['"Inter"', "system-ui", "sans-serif"],
         serif: ['"Source Serif 4"', "Georgia", "serif"],
+        coordination: ['"Source Sans Pro"', "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "grid-light":

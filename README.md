@@ -20,9 +20,11 @@ Cliente web del **Sistema de Información para Posgrado (SIPI)** de la Universid
 
 **Fuentes (Google Fonts, ver `index.html`):**
 
-- Source Sans 3 — texto base (`font-sans`)
-- Plus Jakarta Sans — titulares (`font-display`)
-- Source Serif 4 — nombre institucional en cabecera (`font-serif`)
+- **Inter** (variable) — texto base y titulares (`font-sans`, `font-display`).
+- **Source Serif 4** — nombre de la universidad en cabecera (`font-serif`).
+- **Source Sans Pro** — línea de coordinación en cabecera (`font-coordination`).
+
+**Cabecera institucional:** escudo en `src/assets/images/esc3.png` (importado en `InstitutionalHeader`).
 
 **Target de compilación (app):** ES2023, módulos ESNext, JSX `react-jsx` (`tsconfig.app.json`).
 
@@ -105,6 +107,9 @@ Router: **`BrowserRouter`** (histórico HTML5). En despliegues bajo subruta, con
 
 ```
 src/
+├── assets/
+│   └── images/
+│       └── esc3.png           # Escudo cabecera (UADY)
 ├── api/
 │   └── client.ts              # Axios + interceptor Bearer
 ├── components/

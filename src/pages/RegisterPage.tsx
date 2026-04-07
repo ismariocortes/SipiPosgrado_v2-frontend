@@ -24,7 +24,7 @@ export function RegisterPage() {
           </p>
           <Link
             to="/"
-            className="mt-8 inline-flex text-sm font-semibold text-[#003366] underline underline-offset-2 hover:text-[#0055a5]"
+            className="mt-8 inline-flex text-sm font-semibold text-[#122b40] underline underline-offset-2 hover:text-[#3d657d]"
           >
             Volver al inicio de sesión
           </Link>

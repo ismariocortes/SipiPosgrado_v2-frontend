@@ -202,7 +202,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         </button>
         <a
           href="/recuperar-contrasena"
-          className="inline-flex items-center justify-center gap-1.5 self-center text-sm font-medium text-slate-500 underline-offset-4 transition hover:text-[#003366] hover:underline sm:self-end"
+          className="inline-flex items-center justify-center gap-1.5 self-center text-sm font-medium text-slate-500 underline-offset-4 transition hover:text-[#122b40] hover:underline sm:self-end"
         >
           <svg
             className="h-4 w-4 shrink-0 opacity-70"
