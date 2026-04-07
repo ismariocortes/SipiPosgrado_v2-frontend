@@ -161,7 +161,7 @@ export function LoginForm({ onSuccess, variant = "default" }: LoginFormProps) {
               Iniciar sesión
             </h2>
             <p className="mt-1.5 text-pretty text-sm font-medium text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]">
-              Ingresa tu folio y contraseña institucional.
+              Ingresa tu folio y contraseña.
             </p>
           </>
         ) : (
@@ -173,7 +173,7 @@ export function LoginForm({ onSuccess, variant = "default" }: LoginFormProps) {
               Iniciar sesión
             </h2>
             <p className="mt-1.5 text-pretty text-sm text-slate-600">
-              Ingresa tu folio y contraseña institucional.
+              Ingresa tu folio y contraseña.
             </p>
           </>
         )}

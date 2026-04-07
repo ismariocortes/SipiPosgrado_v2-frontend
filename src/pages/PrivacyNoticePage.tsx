@@ -198,7 +198,7 @@ export function PrivacyNoticePage() {
                 Regresar
               </button>
               <Link
-                to="/registro"
+                to="/nacionalidad"
                 className="uady-btn uady-btn--prominent inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-center text-sm no-underline sm:min-w-[10rem]"
               >
                 Continuar
