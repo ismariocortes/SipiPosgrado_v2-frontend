@@ -1,6 +1,6 @@
 # SIPI Posgrados — Frontend (v2)
 
-Cliente web del **Sistema de Información para Posgrado (SIPI)** de la Universidad Autónoma de Yucatán (UADY). Aplicación **React** con **TypeScript**, orientada al acceso institucional, registro y avisos legales.
+Cliente web del **Sistema de Información para Posgrado (SIPI)** de la Universidad Autónoma de Yucatán (UADY). Aplicación **React** con **TypeScript**: acceso institucional, **registro rápido**, login con **correo y contraseña**, y pantalla para **completar el registro** tras iniciar sesión.
 
 ---
 
@@ -57,7 +57,7 @@ npm install
 Vite solo expone variables con prefijo **`VITE_`**.
 
 | Variable | Descripción | Valor por defecto en código |
-|----------|-------------|-----------------------------|
+|----------|-------------|------------------------------|
 | `VITE_API_BASE_URL` | URL base del API REST (sin barra final recomendada). | `http://127.0.0.1:8000/api/v1` |
 
 Ejemplo (archivo `.env` o `.env.local` en la raíz del proyecto):
@@ -74,16 +74,24 @@ Tras cambiar `.env`, reinicia `npm run dev`.
 
 ### Cliente HTTP (`src/api/client.ts`)
 
-- Instancia **Axios** con `baseURL` desde `VITE_API_BASE_URL` o el default anterior.
+- Instancia **Axios** con `baseURL` desde `VITE_API_BASE_URL` o el valor por defecto (incluye **`/api/v1`**).
 - Cabecera por defecto: `Content-Type: application/json`.
 - **Interceptor de petición:** si existe `localStorage.getItem("token")`, añade `Authorization: Bearer <token>` a todas las peticiones hechas con `apiClient`.
 
 ### Autenticación (`src/services/authService.ts`)
 
-- **`login({ folio, password })`** → `POST /auth/login` (ruta relativa al `baseURL`).
-- Respuesta esperada (tipo actual): JSON con **`token`** (string).
+- **`register({ identity_type, identity_value, email, phone })`** → `POST /auth/register` (registro rápido; **no** devuelve token de sesión). Respuesta tipada como **`RegisterResponse`** (`message`, `user`).
+- **`login({ email, password })`** → `POST /auth/login`; respuesta con **`token`**, **`message`** y **`user`** (incl. `user_status`, `folio`).
 
-Si el backend usa otra ruta o nombres de campos (`access_token`, etc.), hay que alinear `authService.ts` y los tipos.
+### Errores HTTP (`src/lib/apiErrors.ts`)
+
+- Funciones compartidas para mensajes de error: **`getLoginErrorMessage`**, **`getRegisterSubmitErrorMessage`**, **`parseRegisterFieldErrors422`** (validación Laravel por campo).
+
+### Validación de registro (`src/lib/validation/register.ts`)
+
+- Reglas de cliente y **`buildRegisterPayload`** para el registro rápido (CURP / pasaporte, correo, teléfono).
+
+Referencia detallada del contrato API (Laravel / Sanctum): **`src/assets/docs/API_FRONTEND.md`**.
 
 ### CORS
 
@@ -91,15 +99,26 @@ El servidor API debe permitir el origen del front en desarrollo (p. ej. `http://
 
 ---
 
+## Flujo de usuario (resumen)
+
+1. **Inicio (`/`):** login con correo y contraseña, o acceso al **registro rápido** embebido en la misma vista.
+2. **Aviso de privacidad:** se muestra en un **modal** desde el formulario de registro (no hay ruta dedicada).
+3. Tras un **registro exitoso**, se vuelve a la vista de login con un mensaje (correo de confirmación cuando el envío automático esté disponible).
+4. Tras un **login exitoso**, redirección a **`/completar-perfil`** para completar la información del aspirante (requiere token).
+5. **`/completar-perfil`** sin sesión redirige a `/`.
+
+---
+
 ## Enrutamiento (`src/App.tsx`)
 
 | Ruta | Componente | Descripción |
 |------|------------|-------------|
-| `/` | `LoginPage` | Inicio de sesión (folio + contraseña). |
-| `/aviso-de-privacidad` | `PrivacyNoticePage` | Aviso de privacidad; flujo previo al registro. |
-| `/registro` | `RegisterPage` | Placeholder del formulario de registro. |
+| `/` | `LoginPage` | Login (correo + contraseña) y registro rápido embebido. |
+| `/completar-perfil` | `CompleteProfilePage` | Completar perfil / registro ampliado (requiere `token` en `localStorage`). |
 
 Router: **`BrowserRouter`** (histórico HTML5). En despliegues bajo subruta, configurar `basename` en `BrowserRouter` y `base` en Vite si aplica.
+
+**Rutas eliminadas respecto a versiones anteriores:** ya no existen `/aviso-de-privacidad`, `/registro` ni `/nacionalidad` (el aviso se ve en modal; el registro inicial es en la página principal).
 
 ---
 
@@ -108,22 +127,33 @@ Router: **`BrowserRouter`** (histórico HTML5). En despliegues bajo subruta, con
 ```
 src/
 ├── assets/
+│   ├── docs/
+│   │   └── API_FRONTEND.md    # Contrato API para el front (auth / registro)
 │   └── images/
-│       └── esc3.png           # Escudo cabecera (UADY)
+│       ├── esc3.png           # Escudo cabecera (UADY)
+│       └── b1.jpg             # Fondo (LoginPage)
 ├── api/
 │   └── client.ts              # Axios + interceptor Bearer
 ├── components/
 │   ├── layout/
 │   │   ├── InstitutionalHeader.tsx
 │   │   └── InstitutionalFooter.tsx
+│   ├── EmbeddedRegisterForm.tsx
+│   ├── icons.tsx              # Íconos SVG reutilizables (login, privacidad)
 │   ├── LoginForm.tsx
-│   └── UadySeal.tsx
+│   ├── PrivacyNoticeContent.tsx
+│   └── PrivacyNoticeModal.tsx
+├── hooks/
+│   └── useRequireAuth.ts      # Redirección si no hay token (rutas protegidas)
 ├── lib/
-│   └── safeArea.ts            # Estilos inline safe-area (notch)
+│   ├── apiErrors.ts           # Mensajes y 422 Laravel (login / registro)
+│   ├── currentYear.ts
+│   ├── safeArea.ts            # Estilos inline safe-area (notch)
+│   └── validation/
+│       └── register.ts        # Validación cliente registro rápido
 ├── pages/
-│   ├── LoginPage.tsx
-│   ├── PrivacyNoticePage.tsx
-│   └── RegisterPage.tsx
+│   ├── CompleteProfilePage.tsx
+│   └── LoginPage.tsx
 ├── services/
 │   └── authService.ts
 ├── App.tsx
@@ -136,7 +166,7 @@ src/
 | Ruta pública | Uso |
 |--------------|-----|
 | `/images/uady-escudo.png` | Escudo UADY (cabecera; fallback texto “UADY”). |
-| `/images/login-hero.jpg` | Opcional; en diseños anteriores se usaba como fondo (actualmente el login principal no depende de ella). |
+| `/images/login-hero.jpg` | Opcional; diseños anteriores (el login actual usa imagen importada desde `src/assets`). |
 
 ---
 
@@ -151,7 +181,7 @@ src/
 ## Build y despliegue
 
 - Salida de producción: **`dist/`** (HTML, JS y CSS empaquetados y con hash en nombres de archivo).
-- Cualquier servidor estático o CDN puede servir `dist/`; para SPA, las rutas deben **redirigir al `index.html`** (fallback) para que React Router resuelva rutas como `/aviso-de-privacidad`.
+- Cualquier servidor estático o CDN puede servir `dist/`; para SPA, las rutas deben **redirigir al `index.html`** (fallback) para que React Router resuelva rutas como `/completar-perfil`.
 
 Ejemplo conceptual (nginx):
 

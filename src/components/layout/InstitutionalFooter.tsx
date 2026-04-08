@@ -1,5 +1,5 @@
 type InstitutionalFooterProps = {
-  /** Solo usado en páginas con modo oscuro local (p. ej. aviso de privacidad). */
+  /** Variante visual del pie (p. ej. fondo oscuro en ciertas pantallas). */
   tone?: "light" | "dark";
 };
 

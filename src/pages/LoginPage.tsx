@@ -1,12 +1,30 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { EmbeddedRegisterForm } from "../components/EmbeddedRegisterForm";
 import { LoginForm } from "../components/LoginForm";
 import escudoHeader from "../assets/images/esc3.png";
 import loginBackground from "../assets/images/b1.jpg";
 import { getCurrentYear } from "../lib/currentYear";
 import { safeAreaStyle } from "../lib/safeArea";
 
+type AuthView = "login" | "register";
+
 export function LoginPage() {
+  const navigate = useNavigate();
   const year = getCurrentYear();
+  const [authView, setAuthView] = useState<AuthView>("login");
+  const [registerSuccessMessage, setRegisterSuccessMessage] = useState<
+    string | null
+  >(null);
+
+  function showRegister() {
+    setRegisterSuccessMessage(null);
+    setAuthView("register");
+  }
+
+  function showLogin() {
+    setAuthView("login");
+  }
 
   return (
     <div
@@ -19,7 +37,6 @@ export function LoginPage() {
         aria-hidden
       />
 
-      {/* Izquierda (~40%): marca + ciclo + universidad; más pl en md desplaza el bloque a la derecha */}
       <section className="relative z-[1] flex min-h-[min(42dvh,28rem)] w-full flex-col overflow-hidden px-6 py-8 text-white md:min-h-0 md:w-2/5 md:shrink-0 md:py-10 md:pl-10 md:pr-6 lg:pl-12 lg:pr-7">
         <div className="relative z-[2] flex w-full shrink-0 items-center gap-3 self-start">
           <img
@@ -73,37 +90,89 @@ export function LoginPage() {
         </div>
       </section>
 
-      {/* Derecha: columna sin vidrio; solo el bloque del formulario usa glass */}
       <section className="relative z-[1] flex min-h-0 w-full flex-1 flex-col justify-center px-4 py-10 sm:px-6 md:min-h-0 md:h-full md:w-3/5 md:py-12">
-        <div className="login-glass-panel mx-auto w-full max-w-md px-6 py-8 sm:px-8 sm:py-10">
-          <header className="text-center sm:text-left">
-            <h1 className="font-display text-balance text-3xl font-bold tracking-tight text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] sm:text-4xl">
-              Regístrate aquí
-            </h1>
-            <p className="mt-2.5 text-pretty text-sm font-medium leading-relaxed text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)] sm:text-base">
-              Si aún no te has registrado, crea tu cuenta aquí.
-            </p>
-            <Link
-              to="/aviso-de-privacidad"
-              className="mt-7 flex w-full items-center justify-center rounded-xl border border-[#9a7a1a] bg-[#bc921c] py-3.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(18,43,64,0.08)] transition hover:border-[#8a6e18] hover:bg-[#a67c18] hover:text-white"
-            >
-              Registro
-            </Link>
-          </header>
+        <div className="login-glass-panel mx-auto h-[min(44rem,92dvh)] w-full max-w-md overflow-y-auto overscroll-y-contain px-6 py-8 sm:px-8 sm:py-10">
+          {authView === "register" ? (
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-3 sm:mb-5">
+                <h1
+                  id="embedded-register-title"
+                  className="min-w-0 flex-1 font-display text-balance text-3xl font-bold tracking-tight text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] sm:text-3xl"
+                >
+                  Registro
+                </h1>
+                <button
+                  type="button"
+                  onClick={showLogin}
+                  className="shrink-0 text-sm font-semibold text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5c7d92]"
+                >
+                  <span className="whitespace-nowrap">
+                    <span className="mr-1" aria-hidden>
+                      ←
+                    </span>
+                    Regresar al login
+                  </span>
+                </button>
+              </div>
+              <EmbeddedRegisterForm
+                formAriaLabelledBy="embedded-register-title"
+                onRegistered={(msg) => {
+                  setRegisterSuccessMessage(msg);
+                  setAuthView("login");
+                }}
+              />
+            </div>
+          ) : (
+            <>
+              <header className="text-center sm:text-left">
+                <h1 className="font-display text-balance text-3xl font-bold tracking-tight text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] sm:text-3xl">
+                  Regístrate aquí
+                </h1>
+                <p className="mt-2.5 text-pretty text-sm font-medium leading-relaxed text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)] sm:text-base">
+                  Si aún no te has registrado, crea tu cuenta aquí.
+                </p>
+                <button
+                  type="button"
+                  onClick={showRegister}
+                  className="mt-7 flex w-full items-center justify-center rounded-xl border border-[#9a7a1a] bg-[#bc921c] py-3.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(18,43,64,0.08)] transition hover:border-[#8a6e18] hover:bg-[#a67c18] hover:text-white"
+                >
+                  Registro
+                </button>
+              </header>
 
-          <div
-            className="my-9 flex items-center gap-3"
-            role="separator"
-            aria-label="Separador"
-          >
-            <div className="h-px flex-1 bg-white/35" aria-hidden />
-            <span className="shrink-0 text-xs font-semibold lowercase tracking-wide text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
-              o
-            </span>
-            <div className="h-px flex-1 bg-white/35" aria-hidden />
-          </div>
+              <div
+                className="my-9 flex items-center gap-3"
+                role="separator"
+                aria-label="Separador"
+              >
+                <div className="h-px flex-1 bg-white/35" aria-hidden />
+                <span className="shrink-0 text-xs font-semibold lowercase tracking-wide text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
+                  o
+                </span>
+                <div className="h-px flex-1 bg-white/35" aria-hidden />
+              </div>
 
-          <LoginForm variant="embedded" />
+              {registerSuccessMessage ? (
+                <div
+                  className="mb-6"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="uady-alert uady-alert--success text-left">
+                    <strong className="font-semibold">Listo. </strong>
+                    {registerSuccessMessage}
+                  </div>
+                </div>
+              ) : null}
+
+              <LoginForm
+                variant="embedded"
+                onSuccess={() =>
+                  navigate("/completar-perfil", { replace: true })
+                }
+              />
+            </>
+          )}
         </div>
       </section>
     </div>
