@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { CompleteProfilePage } from "./pages/CompleteProfilePage";
+import { CompletarPerfilPage } from "./pages/CompletarPerfilPage";
 import { LoginPage } from "./pages/LoginPage";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route
           path="/completar-perfil"
-          element={<CompleteProfilePage />}
+          element={<CompletarPerfilPage />}
         />
       </Routes>
     </BrowserRouter>

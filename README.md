@@ -114,7 +114,7 @@ El servidor API debe permitir el origen del front en desarrollo (p. ej. `http://
 | Ruta | Componente | Descripción |
 |------|------------|-------------|
 | `/` | `LoginPage` | Login (correo + contraseña) y registro rápido embebido. |
-| `/completar-perfil` | `CompleteProfilePage` | Completar perfil / registro ampliado (requiere `token` en `localStorage`). |
+| `/completar-perfil` | `CompletarPerfilPage` | Wizard en 7 pasos para completar perfil (requiere `token` en `localStorage`). |
 
 Router: **`BrowserRouter`** (histórico HTML5). En despliegues bajo subruta, configurar `basename` en `BrowserRouter` y `base` en Vite si aplica.
 
@@ -138,6 +138,7 @@ src/
 │   ├── layout/
 │   │   ├── InstitutionalHeader.tsx
 │   │   └── InstitutionalFooter.tsx
+│   ├── completar-perfil/      # Wizard «completar perfil» (pasos, stepper, validación)
 │   ├── EmbeddedRegisterForm.tsx
 │   ├── icons.tsx              # Íconos SVG reutilizables (login, privacidad)
 │   ├── LoginForm.tsx
@@ -152,7 +153,7 @@ src/
 │   └── validation/
 │       └── register.ts        # Validación cliente registro rápido
 ├── pages/
-│   ├── CompleteProfilePage.tsx
+│   ├── CompletarPerfilPage.tsx
 │   └── LoginPage.tsx
 ├── services/
 │   └── authService.ts
